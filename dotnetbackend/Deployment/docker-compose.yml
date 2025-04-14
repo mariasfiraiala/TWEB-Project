@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  mobylab-app-db:
+    image: postgres:13.2-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: mobylab-app
+      POSTGRES_DB: mobylab-app
+      POSTGRES_PASSWORD: mobylab-app
+    volumes:
+      - mobylab-app-db-vol:/var/lib/postgresql/data
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    ports:
+      - 8002:80
+    depends_on:
+      - mobylab-app-db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.admin
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+
+volumes:
+  mobylab-app-db-vol:
+  pgadmin:
